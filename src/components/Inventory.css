@@ -236,9 +236,32 @@
   gap: 1rem;
 }
 
-.empty-state {
-  padding: 4rem;
-  text-align: center;
-  color: var(--text-muted);
-  font-style: italic;
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .modal-header {
+    padding: 1rem 1.25rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    padding: 1rem 1.25rem;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+  }
+
+  .inventory-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .search-box {
+    max-width: none;
+  }
 }

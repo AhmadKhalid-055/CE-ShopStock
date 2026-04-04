@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Loader2, ShieldCheck, Database, CloudOff } from 'lucide-react';
+import { ShoppingBag, Loader2, ShieldCheck, Database, CloudOff, Menu, X } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import Inventory from './components/Inventory';
 import SalesPortal from './components/SalesPortal';
@@ -13,6 +13,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [loading, setLoading] = useState(true);
   const [dbStatus, setDbStatus] = useState('Checking...');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   // 1. HARD-WIRED LOCAL RECOVERY (UNBREAKABLE INITIALIZATION)
   const [categories, setCategories] = useState(() => {
@@ -178,9 +179,20 @@ function App() {
     }
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setIsSidebarOpen(false);
+  };
+
   return (
-    <div className="app-container">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+    <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+       <button className="mobile-toggle" onClick={() => setIsSidebarOpen(!isSidebarOpen)} aria-label="Toggle Menu">
+          {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+       </button>
+       
+       <div className={`sidebar-overlay ${isSidebarOpen ? 'active' : ''}`} onClick={() => setIsSidebarOpen(false)}></div>
+
+      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
       <main className="main-content">
         {renderContent()}
       </main>

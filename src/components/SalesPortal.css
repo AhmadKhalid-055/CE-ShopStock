@@ -194,3 +194,59 @@
   .sidebar, .dashboard-header, .sales-header, .sidebar-nav, .sidebar-brand { display: none !important; }
   .sale-form-container, .sales-portal { border: none !important; }
 }
+
+@media (max-width: 768px) {
+  .persistent-settings-inside {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .total-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.25rem;
+  }
+  
+  .total-bar strong {
+    font-size: 1.4rem;
+  }
+  
+  .modal-footer.embedded {
+    flex-direction: column;
+    padding: 1.25rem;
+    gap: 0.75rem;
+  }
+  
+  .modal-footer.embedded .btn {
+    width: 100%;
+    padding: 1rem !important;
+  }
+
+  .item-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .items-list-form {
+    max-height: 400px; /* More space on mobile to scroll */
+  }
+
+  .input-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .sales-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .sales-portal, .sales-portal-input {
+    height: auto;
+    overflow: visible;
+  }
+}

@@ -192,3 +192,37 @@
 @media (max-width: 1024px) {
   .analytics-content { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 640px) {
+  .analytics-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .timeframe-picker {
+    width: 100%;
+    padding: 0.25rem;
+  }
+  
+  .time-btn {
+    flex: 1;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.7rem;
+  }
+  
+  .stat-card.modern {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .card-info h3 {
+    font-size: 1.5rem;
+  }
+  
+  .analytics-header h1 {
+    font-size: 1.5rem;
+  }
+}

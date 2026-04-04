@@ -81,6 +81,15 @@
 
 @media (max-width: 1024px) {
   .sidebar {
-    display: none; /* Hide on mobile for basic demo, could implement burger menu */
+    left: calc(-1 * var(--sidebar-width));
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .app-container.sidebar-open .sidebar {
+    left: 0;
+  }
+  
+  .sidebar-brand h2 {
+    font-size: 1.1rem;
   }
 }
