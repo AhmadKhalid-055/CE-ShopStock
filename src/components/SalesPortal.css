@@ -1,0 +1,196 @@
+.sales-portal, .sales-portal-input {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 4.5rem); /* Perfectly fits the app content area */
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.sales-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5rem;
+}
+
+.sale-form-container {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sale-form {
+  padding: 1.5rem 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+
+.persistent-settings-inside {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.persistent-settings-inside .form-group label {
+  color: #000 !important;
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.persistent-settings-inside input {
+  font-weight: 700;
+  color: var(--primary);
+  background: #ffffff !important;
+}
+
+.persistent-settings-inside input.alpha-input {
+  color: #db2777;
+  letter-spacing: 2px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group label {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 0.25rem;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.items-list-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.item-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  background: #ffffff;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid #e2e8f0;
+}
+
+.total-bar {
+  margin-top: 1rem;
+  padding: 1.25rem 2rem;
+  background: var(--bg-sidebar);
+  color: #fff;
+  border-radius: var(--radius-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-bar strong {
+  font-size: 1.8rem;
+  color: #10b981;
+}
+
+.btn.save-only {
+  background: #334155 !important; /* Professional Slate Blue */
+  color: #fff !important;
+  font-weight: 700;
+  padding: 0 1.5rem;
+  border-radius: var(--radius-md);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.btn.save-only:hover {
+  background: #1e293b !important;
+  transform: translateY(-2px);
+}
+
+.modal-footer.embedded {
+  padding: 1.25rem 2rem;
+  background: #f8fafc;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem; /* More compact gap for 3 buttons */
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn.primary {
+  background: #000 !important;
+  color: #fff !important;
+  font-weight: 800;
+  padding: 0.8rem 2rem;
+}
+
+.btn.secondary.outline {
+  background: #64748b !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 700;
+}
+
+.sales-table-card { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.table-responsive { flex: 1; overflow-y: auto; }
+.sales-table { width: 100%; border-collapse: collapse; }
+.sales-table th { background: #f8fafc; padding: 1.25rem 1.5rem; text-align: left; }
+.sales-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; }
+
+.id-cell { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--primary); }
+.price-cell { font-weight: 700; color: #16a34a; }
+
+.action-row { display: flex; gap: 0.75rem; }
+.btn-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0; cursor: pointer; }
+.btn-icon.view { color: #16a34a; background: #f0fdf4; border-color: #bbf7d0; }
+.btn-icon.edit { color: #2563eb; background: #eff6ff; border-color: #bfdbfe; }
+.btn-icon.delete { color: #dc2626; background: #fef2f2; border-color: #fecaca; }
+
+/* Invoice (Still Modal) */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center; justify-content: center;
+  z-index: 2500;
+}
+
+.invoice-box {
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.invoice-header-strip { padding: 1rem 1.5rem; background: #f8fafc; display: flex; justify-content: space-between; border-bottom: 2px solid var(--primary); }
+.invoice-content { padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.shop-details h1 { font-size: 1.5rem; font-weight: 800; }
+.invoice-total strong { font-size: 1.5rem; }
+.invoice-footer { padding: 1rem; display: flex; justify-content: center; border-top: 1px solid #f1f5f9; }
+
+@media print {
+  .sidebar, .dashboard-header, .sales-header, .sidebar-nav, .sidebar-brand { display: none !important; }
+  .sale-form-container, .sales-portal { border: none !important; }
+}
