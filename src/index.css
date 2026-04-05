@@ -303,8 +303,10 @@ a {
   }
 
   .mobile-navbar .brand h2 {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: -0.5px;
   }
 
   .mobile-navbar .brand h2 span {

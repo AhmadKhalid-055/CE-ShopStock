@@ -189,7 +189,7 @@ function App() {
        <div className="mobile-navbar">
           <div className="brand">
              <ShoppingBag size={24} color="var(--primary)" />
-             <h2>CHOUDHARY <span>E.</span></h2>
+             <h2>CHOUDHARY <span>ELECTRONICS</span></h2>
           </div>
           <button className="mobile-toggle" onClick={() => setIsSidebarOpen(!isSidebarOpen)} aria-label="Toggle Menu">
              {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
