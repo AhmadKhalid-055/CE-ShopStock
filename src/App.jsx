@@ -186,9 +186,15 @@ function App() {
 
   return (
     <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-       <button className="mobile-toggle" onClick={() => setIsSidebarOpen(!isSidebarOpen)} aria-label="Toggle Menu">
-          {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
-       </button>
+       <div className="mobile-navbar">
+          <div className="brand">
+             <ShoppingBag size={24} color="var(--primary)" />
+             <h2>CHOUDHARY <span>E.</span></h2>
+          </div>
+          <button className="mobile-toggle" onClick={() => setIsSidebarOpen(!isSidebarOpen)} aria-label="Toggle Menu">
+             {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+       </div>
        
        <div className={`sidebar-overlay ${isSidebarOpen ? 'active' : ''}`} onClick={() => setIsSidebarOpen(false)}></div>
 

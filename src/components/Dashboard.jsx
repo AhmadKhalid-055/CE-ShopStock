@@ -79,7 +79,7 @@ const Dashboard = ({ products, sales }) => {
             <h3>Recent Transactions</h3>
           </div>
           <div className="table-responsive">
-            <table>
+            <table className="stackable-table">
               <thead>
                 <tr>
                   <th>Item Name</th>
@@ -92,19 +92,19 @@ const Dashboard = ({ products, sales }) => {
               <tbody>
                 {recentSales.length > 0 ? recentSales.map((sale) => (
                   <tr key={sale.id}>
-                    <td>
+                    <td data-label="Item Name">
                       <div className="item-info">
                         <strong>{sale.item}</strong>
                       </div>
                     </td>
-                    <td>{sale.customer}</td>
-                    <td>{sale.amount}</td>
-                    <td>
+                    <td data-label="Customer">{sale.customer}</td>
+                    <td data-label="Amount">{sale.amount}</td>
+                    <td data-label="Status">
                       <span className={`status-badge ${sale.status.toLowerCase()}`}>
                         {sale.status}
                       </span>
                     </td>
-                    <td>{sale.date}</td>
+                    <td data-label="Date">{sale.date}</td>
                   </tr>
                 )) : (
                   <tr><td colSpan="5" style={{textAlign:'center', color:'#94a3b8', padding:'2rem'}}>No sales yet. Start selling!</td></tr>

@@ -205,7 +205,8 @@ a {
   .main-content {
     margin-left: 0;
     padding: 1rem;
-    padding-top: 5rem; /* Space for mobile header */
+    padding-top: 5.5rem; /* Space for mobile header */
+    min-height: calc(100vh - 5.5rem);
   }
 
   .app-container {
@@ -226,41 +227,127 @@ a {
   .table-responsive {
     margin: 0 -1rem;
     padding: 0 1rem;
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* Stackable Table Pattern for Mobile */
+  .stackable-table thead {
+    display: none;
+  }
+
+  .stackable-table tr {
+    display: block;
+    margin-bottom: 1.5rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .stackable-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: right;
+    font-size: 0.9rem;
+  }
+
+  .stackable-table td:last-child {
+    border-bottom: none;
+  }
+
+  .stackable-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  .stackable-table td.full-width {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .stackable-table td.full-width::before {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Mobile Header */
+  .mobile-navbar {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4.5rem;
+    background: var(--bg-sidebar);
+    color: white;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    z-index: 2500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .mobile-navbar .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .mobile-navbar .brand h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .mobile-navbar .brand h2 span {
+    color: var(--primary);
   }
 
   /* Mobile Toggle Button */
   .mobile-toggle {
     display: flex !important;
-    position: fixed;
-    top: 1.25rem;
-    left: 1.25rem;
-    z-index: 2000;
-    background: var(--bg-sidebar);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
-    padding: 0.75rem;
+    padding: 0.6rem;
     border-radius: var(--radius-md);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     border: none;
     cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .mobile-toggle:active {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(0.95);
   }
 
   /* Sidebar Overlay */
   .sidebar-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 1400;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 1900;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .sidebar-overlay.active {
     opacity: 1;
     visibility: visible;
   }
+}
+
+.mobile-navbar {
+  display: none;
 }
 
 .mobile-toggle {

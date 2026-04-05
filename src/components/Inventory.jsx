@@ -176,7 +176,7 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
 
       <div className="content-card inventory-table-card">
         <div className="table-responsive">
-          <table className="inventory-table">
+          <table className="inventory-table stackable-table">
             <thead>
               <tr>
                 <th>Product Info</th>
@@ -193,7 +193,7 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
             <tbody>
               {filteredProducts.map((product) => (
                 <tr key={product.id}>
-                  <td>
+                  <td data-label="Product Info" className="full-width">
                     <div className="product-info-cell">
                       <div className="product-icon">💻</div>
                       <div>
@@ -201,26 +201,26 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
                       </div>
                     </div>
                   </td>
-                  <td><span className="category-tag">{product.category}</span></td>
-                  <td>{product.company}</td>
-                  <td>Rs.{product.purchase_price.toFixed(2)}</td>
-                  <td>Rs.{product.sale_price.toFixed(2)}</td>
-                  <td style={{color: 'var(--secondary)', fontWeight: 600}}>
+                  <td data-label="Category"><span className="category-tag">{product.category}</span></td>
+                  <td data-label="Company">{product.company}</td>
+                  <td data-label="Purchase">Rs.{product.purchase_price.toFixed(2)}</td>
+                  <td data-label="Sale">Rs.{product.sale_price.toFixed(2)}</td>
+                  <td data-label="Profit" style={{color: 'var(--secondary)', fontWeight: 600}}>
                     +Rs.{(product.sale_price - product.purchase_price).toFixed(2)}
                   </td>
-                  <td>{product.stock}</td>
-                  <td>
+                  <td data-label="In Stock">{product.stock}</td>
+                  <td data-label="Health">
                     <span className={`health-badge ${product.status.toLowerCase().replace(/\s+/g, '-')}`}>
                       {product.status}
                     </span>
                   </td>
-                  <td>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button onClick={() => handleEdit(product)} title="Edit" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#64748b' }}>
-                        <Edit size={16} />
+                  <td data-label="Actions">
+                    <div style={{ display: 'flex', gap: '0.8rem', justifyContent: 'flex-end' }}>
+                      <button onClick={() => handleEdit(product)} title="Edit" className="mobile-action-btn edit">
+                        <Edit size={18} />
                       </button>
-                      <button onClick={() => setConfirmDeleteId(product.id)} title="Delete" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ef4444' }}>
-                        <Trash2 size={16} />
+                      <button onClick={() => setConfirmDeleteId(product.id)} title="Delete" className="mobile-action-btn delete">
+                        <Trash2 size={18} />
                       </button>
                     </div>
                   </td>

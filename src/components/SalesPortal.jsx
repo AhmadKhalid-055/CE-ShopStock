@@ -308,7 +308,7 @@ const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, p
 
       <div className="content-card sales-table-card">
         <div className="table-responsive">
-          <table className="sales-table">
+          <table className="sales-table stackable-table">
             <thead>
               <tr>
                 <th>Invoice #</th>
@@ -322,13 +322,13 @@ const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, p
             <tbody>
               {sales.map((s, idx) => (
                 <tr key={idx}>
-                  <td className="id-cell">#{s.id}</td>
-                  <td>{s.memo}</td>
-                  <td><strong>{s.customer}</strong></td>
-                  <td>{s.items.reduce((sum, i) => sum + (i.quantity || 1), 0)}</td>
-                  <td className="price-cell">Rs.{s.total.toFixed(2)}</td>
-                  <td>
-                    <div className="action-row">
+                  <td data-label="Invoice #" className="id-cell full-width">#{s.id}</td>
+                  <td data-label="Memo">{s.memo}</td>
+                  <td data-label="Customer"><strong>{s.customer}</strong></td>
+                  <td data-label="Units">{s.items.reduce((sum, i) => sum + (i.quantity || 1), 0)}</td>
+                  <td data-label="Total Bill" className="price-cell">Rs.{s.total.toFixed(2)}</td>
+                  <td data-label="Actions">
+                    <div className="action-row" style={{ justifyContent: 'flex-end' }}>
                        <button className="btn-icon view" onClick={() => setInvoicePreview(s)} title="View Invoice">
                           <FileText size={16}/>
                        </button>
