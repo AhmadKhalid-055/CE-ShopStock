@@ -15,6 +15,31 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [dbStatus, setDbStatus] = useState('Checking...');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+     return localStorage.getItem('ch_logged_in') !== 'false';
+  });
+
+  const [loginUsername, setLoginUsername] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const handleLogout = () => {
+     setIsLoggedIn(false);
+     localStorage.setItem('ch_logged_in', 'false');
+  };
+
+  const handleLogin = (e) => {
+     if (e) e.preventDefault();
+     if (loginUsername === 'CHOUDHARYELECTRONICS' && loginPassword === '002383') {
+        setIsLoggedIn(true);
+        localStorage.setItem('ch_logged_in', 'true');
+        setLoginError('');
+        setLoginUsername('');
+        setLoginPassword('');
+     } else {
+        setLoginError('Invalid Username or Password. Please try again.');
+     }
+  };
   
   // 1. HARD-WIRED LOCAL RECOVERY (UNBREAKABLE INITIALIZATION)
   const [categories, setCategories] = useState(() => {
@@ -192,6 +217,37 @@ function App() {
     } catch(e) {}
   };
 
+  if (!isLoggedIn) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a', padding: '1rem', fontFamily: "'Inter', sans-serif" }}>
+         <div className="fade-in" style={{ background: '#fff', padding: '3rem 2rem', borderRadius: '16px', maxWidth: '400px', width: '100%', textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
+            <div style={{ width: '80px', height: '80px', background: '#e0e7ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>
+               <ShieldCheck size={40} color="#4f46e5" />
+            </div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b', marginBottom: '0.5rem' }}>Choudhary Electronics</h2>
+            <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '2rem' }}>Please sign in to access the system portal.</p>
+            
+            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#475569', marginBottom: '0.5rem' }}>Username</label>
+                  <input type="text" value={loginUsername} onChange={e => setLoginUsername(e.target.value)} placeholder="Enter Username" style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.95rem' }} />
+               </div>
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#475569', marginBottom: '0.5rem' }}>Password</label>
+                  <input type="password" value={loginPassword} onChange={e => setLoginPassword(e.target.value)} placeholder="Enter Password" style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.95rem' }} />
+               </div>
+
+               {loginError && <div style={{ color: '#ef4444', fontSize: '0.85rem', fontWeight: 500, textAlign: 'center', marginTop: '0.5rem' }}>{loginError}</div>}
+
+               <button type="submit" className="btn primary" style={{ width: '100%', padding: '0.8rem', fontSize: '1rem', display: 'flex', justifyContent: 'center', fontWeight: 600, marginTop: '1rem' }}>
+                  Sign In to Portal
+               </button>
+            </form>
+         </div>
+      </div>
+    );
+  }
+
   if (loading && products.length === 0) {
     return (
       <div className="loading-screen-premium">
@@ -239,7 +295,7 @@ function App() {
        {isSidebarOpen && (
          <div className="sidebar-overlay active" onClick={() => setIsSidebarOpen(false)}></div>
        )}
-      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} isOpen={isSidebarOpen} />
+      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} isOpen={isSidebarOpen} onLogout={handleLogout} />
       <main className="main-content">
         {renderContent()}
       </main>

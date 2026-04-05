@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import './Sidebar.css';
 
-const Sidebar = ({ activeTab, onTabChange, isOpen }) => {
+const Sidebar = ({ activeTab, onTabChange, isOpen, onLogout }) => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'inventory', label: 'Stock Manager', icon: Package },
@@ -51,7 +51,7 @@ const Sidebar = ({ activeTab, onTabChange, isOpen }) => {
           <Sliders size={20} />
           <span>Settings</span>
         </button>
-        <button className="nav-item logout">
+        <button className="nav-item logout" onClick={onLogout}>
           <LogOut size={20} />
           <span>Log Out</span>
         </button>

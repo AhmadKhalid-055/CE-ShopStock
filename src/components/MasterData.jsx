@@ -93,7 +93,7 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
           </div>
           <div className="setup-input-stack">
             <SearchableInput
-              options={categories}
+              options={[...categories].sort((a,b) => a.localeCompare(b))}
               value={newCompany.category}
               onChange={(val) => setNewCompany({ ...newCompany, category: val })}
               placeholder="Select or type Category"
@@ -138,14 +138,14 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
           </div>
           <div className="setup-input-row">
             <SearchableInput
-              options={categories}
+              options={[...categories].sort((a,b) => a.localeCompare(b))}
               value={newModel.category}
               onChange={(val) => setNewModel({ ...newModel, category: val, company: '' })}
               placeholder="Category"
             />
 
             <SearchableInput
-              options={companies.filter(c => c.category === newModel.category).map(c => c.name)}
+              options={companies.filter(c => c.category === newModel.category).map(c => c.name).sort((a,b) => a.localeCompare(b))}
               value={newModel.company}
               onChange={(val) => setNewModel({ ...newModel, company: val })}
               placeholder="Company"

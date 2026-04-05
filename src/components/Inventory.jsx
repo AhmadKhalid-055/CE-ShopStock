@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, MoreVertical, Filter, Download, X, Edit, Trash2 } from 'lucide-react';
+import { Search, Plus, X, Edit, Trash2, ArrowDownAZ, ArrowUpAZ, ArrowDownUp, Filter } from 'lucide-react';
 import ConfirmModal from './ConfirmModal';
 import SearchableInput from './SearchableInput';
 import './Inventory.css';
@@ -9,6 +9,8 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProductId, setEditingProductId] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [sortOrder, setSortOrder] = useState('default'); // 'default' | 'az' | 'za' | 'date-asc' | 'date-desc'
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [newProduct, setNewProduct] = useState({
     category: '',
     company: '',
@@ -30,11 +32,20 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
     setIsModalOpen(true);
   };
 
-  const filteredProducts = products.filter(p => 
-    (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
-    (p.model || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (p.company || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = (() => {
+    let list = products.filter(p =>
+      (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
+      (p.model || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.company || '').toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    if (sortOrder === 'az') list = [...list].sort((a, b) => (a.model || '').localeCompare(b.model || ''));
+    if (sortOrder === 'za') list = [...list].sort((a, b) => (b.model || '').localeCompare(a.model || ''));
+    if (sortOrder === 'date-asc') list = [...list].sort((a, b) => (a.id || 0) - (b.id || 0));
+    if (sortOrder === 'date-desc') list = [...list].sort((a, b) => (b.id || 0) - (a.id || 0));
+    if (sortOrder === 'stock-asc') list = [...list].sort((a, b) => (a.stock || 0) - (b.stock || 0));
+    if (sortOrder === 'stock-desc') list = [...list].sort((a, b) => (b.stock || 0) - (a.stock || 0));
+    return list;
+  })();
 
   const handleSave = () => {
     if (newProduct.model && newProduct.purchase_price && newProduct.sale_price && newProduct.stock) {
@@ -88,7 +99,7 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
               <div className="form-group">
                 <label>Category</label>
                 <SearchableInput
-                  options={categories}
+                  options={[...categories].sort((a,b) => a.localeCompare(b))}
                   value={newProduct.category}
                   onChange={(val) => setNewProduct({...newProduct, category: val, company: '', model: ''})}
                   placeholder="Select or type Category"
@@ -98,7 +109,7 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
               <div className="form-group">
                 <label>Company / Brand</label>
                 <SearchableInput
-                  options={companies.filter(c => c.category === newProduct.category).map(c => c.name)}
+                  options={companies.filter(c => c.category === newProduct.category).map(c => c.name).sort((a,b) => a.localeCompare(b))}
                   value={newProduct.company}
                   disabled={!newProduct.category}
                   onChange={(val) => setNewProduct({...newProduct, company: val, model: ''})}
@@ -109,7 +120,7 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
               <div className="form-group">
                 <label>Model</label>
                 <SearchableInput
-                  options={models.filter(m => m.company === newProduct.company && m.category === newProduct.category).map(m => m.name)}
+                  options={models.filter(m => m.company === newProduct.company && m.category === newProduct.category).map(m => m.name).sort((a,b) => a.localeCompare(b))}
                   value={newProduct.model}
                   disabled={!newProduct.company}
                   onChange={(val) => setNewProduct({...newProduct, model: val})}
@@ -165,6 +176,35 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+        </div>
+        <div className="filter-dropdown-container" style={{ position: 'relative' }}>
+          <button className="btn outline" onClick={() => setIsSortOpen(!isSortOpen)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#fff', border: '1px solid #e2e8f0', padding: '0.6rem 1rem', borderRadius: '8px', cursor: 'pointer', color: '#334155', fontWeight: 600 }}>
+            <Filter size={18} />
+            <span>Sort By</span>
+          </button>
+          
+          {isSortOpen && (
+            <div className="filter-dropdown-menu fade-in" style={{ position: 'absolute', right: 0, top: '100%', marginTop: '0.5rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.05)', zIndex: 50, minWidth: '200px', display: 'flex', flexDirection: 'column', padding: '0.5rem', gap: '0.25rem' }}>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortOrder === 'az' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortOrder === 'az' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortOrder(sortOrder === 'az' ? 'default' : 'az'); setIsSortOpen(false); }}>
+                <ArrowDownAZ size={16} /> A to Z
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortOrder === 'za' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortOrder === 'za' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortOrder(sortOrder === 'za' ? 'default' : 'za'); setIsSortOpen(false); }}>
+                <ArrowUpAZ size={16} /> Z to A
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortOrder === 'date-desc' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortOrder === 'date-desc' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortOrder(sortOrder === 'date-desc' ? 'default' : 'date-desc'); setIsSortOpen(false); }}>
+                <ArrowDownUp size={16} /> Newest First
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortOrder === 'date-asc' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortOrder === 'date-asc' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortOrder(sortOrder === 'date-asc' ? 'default' : 'date-asc'); setIsSortOpen(false); }}>
+                <ArrowDownUp size={16} /> Oldest First
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortOrder === 'stock-desc' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortOrder === 'stock-desc' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortOrder(sortOrder === 'stock-desc' ? 'default' : 'stock-desc'); setIsSortOpen(false); }}>
+                <ArrowDownUp size={16} /> Stock: High to Low
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortOrder === 'stock-asc' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortOrder === 'stock-asc' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortOrder(sortOrder === 'stock-asc' ? 'default' : 'stock-asc'); setIsSortOpen(false); }}>
+                <ArrowDownUp size={16} /> Stock: Low to High
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

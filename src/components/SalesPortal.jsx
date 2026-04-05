@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Package, Plus, Trash2, X, Printer, FileText, Lock, Hash, StickyNote, Edit3, Save } from 'lucide-react';
+import { User, Package, Plus, Trash2, X, Printer, FileText, Hash, StickyNote, Edit3, Save, ArrowDownAZ, ArrowUpAZ, ArrowDownUp, Filter } from 'lucide-react';
 import ConfirmModal from './ConfirmModal';
 import SearchableInput from './SearchableInput';
 import './SalesPortal.css';
@@ -10,6 +10,8 @@ const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, p
   const [editingSale, setEditingSale] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [stockError, setStockError] = useState('');
+  const [sortSales, setSortSales] = useState('default'); // 'default'|'az'|'za'|'date-asc'|'date-desc'|'amount-asc'|'amount-desc'
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   const [newSale, setNewSale] = useState({
     customer: '',
@@ -195,7 +197,7 @@ const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, p
                     <div key={idx} className="item-row fade-in">
                       <div className="form-group flex-2">
                         <SearchableInput
-                          options={products.filter(p => p.stock > 0 || editingSale).map(p => `${p.model} (${p.company})`)}
+                          options={products.filter(p => p.stock > 0 || editingSale).map(p => `${p.model} (${p.company})`).sort((a,b) => a.localeCompare(b))}
                           value={item._productSearch !== undefined ? item._productSearch : (item.productId ? (products.find(p=>p.id===item.productId) ? `${products.find(p=>p.id===item.productId).model} (${products.find(p=>p.id===item.productId).company})` : '') : '')}
                           disabled={editingSale}
                           placeholder="Type to search item..."
@@ -316,6 +318,36 @@ const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, p
         </div>
       )}
 
+      <div className="sales-sort-bar" style={{ display: 'flex', justifyContent: 'flex-end', padding: '0 1.5rem', marginBottom: '1rem', position: 'relative' }}>
+          <button className="btn outline" onClick={() => setIsSortOpen(!isSortOpen)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#fff', border: '1px solid #e2e8f0', padding: '0.6rem 1rem', borderRadius: '8px', cursor: 'pointer', color: '#334155', fontWeight: 600 }}>
+            <Filter size={18} />
+            <span>Sort Records By</span>
+          </button>
+          
+          {isSortOpen && (
+            <div className="filter-dropdown-menu fade-in" style={{ position: 'absolute', right: '1.5rem', top: '100%', marginTop: '0.5rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.05)', zIndex: 50, minWidth: '200px', display: 'flex', flexDirection: 'column', padding: '0.5rem', gap: '0.25rem' }}>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortSales === 'az' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortSales === 'az' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortSales(sortSales === 'az' ? 'default' : 'az'); setIsSortOpen(false); }}>
+                <ArrowDownAZ size={16} /> Customer: A to Z
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortSales === 'za' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortSales === 'za' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortSales(sortSales === 'za' ? 'default' : 'za'); setIsSortOpen(false); }}>
+                <ArrowUpAZ size={16} /> Customer: Z to A
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortSales === 'date-desc' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortSales === 'date-desc' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortSales(sortSales === 'date-desc' ? 'default' : 'date-desc'); setIsSortOpen(false); }}>
+                <ArrowDownUp size={16} /> Date: Newest First
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortSales === 'date-asc' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortSales === 'date-asc' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortSales(sortSales === 'date-asc' ? 'default' : 'date-asc'); setIsSortOpen(false); }}>
+                <ArrowDownUp size={16} /> Date: Oldest First
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortSales === 'amount-desc' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortSales === 'amount-desc' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortSales(sortSales === 'amount-desc' ? 'default' : 'amount-desc'); setIsSortOpen(false); }}>
+                <ArrowDownUp size={16} /> Amount: High to Low
+              </button>
+              <button style={{ padding: '0.75rem 1rem', textAlign: 'left', background: sortSales === 'amount-asc' ? '#f0f9ff' : 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', color: sortSales === 'amount-asc' ? 'var(--primary)' : '#475569', fontWeight: 500 }} onClick={() => { setSortSales(sortSales === 'amount-asc' ? 'default' : 'amount-asc'); setIsSortOpen(false); }}>
+                <ArrowDownUp size={16} /> Amount: Low to High
+              </button>
+            </div>
+          )}
+      </div>
+
       <div className="content-card sales-table-card">
         <div className="table-responsive">
           <table className="sales-table stackable-table">
@@ -330,7 +362,16 @@ const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, p
               </tr>
             </thead>
             <tbody>
-              {sales.map((s, idx) => (
+              {(() => {
+                let sorted = [...sales];
+                if (sortSales === 'az') sorted.sort((a,b) => (a.customer||'').localeCompare(b.customer||''));
+                if (sortSales === 'za') sorted.sort((a,b) => (b.customer||'').localeCompare(a.customer||''));
+                if (sortSales === 'date-desc') sorted.sort((a,b) => (b.id||'').toString().localeCompare((a.id||'').toString()));
+                if (sortSales === 'date-asc') sorted.sort((a,b) => (a.id||'').toString().localeCompare((b.id||'').toString()));
+                if (sortSales === 'amount-desc') sorted.sort((a,b) => (b.total||0) - (a.total||0));
+                if (sortSales === 'amount-asc') sorted.sort((a,b) => (a.total||0) - (b.total||0));
+                return sorted;
+              })().map((s, idx) => (
                 <tr key={idx}>
                   <td data-label="Invoice #" className="id-cell full-width">#{s.id}</td>
                   <td data-label="Memo">{s.memo}</td>
