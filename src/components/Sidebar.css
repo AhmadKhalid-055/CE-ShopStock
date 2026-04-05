@@ -87,7 +87,7 @@
     padding-top: 5.5rem; /* 4.5rem navbar + 1rem padding */
   }
 
-  .app-container.sidebar-open .sidebar {
+  .sidebar.mobile-open {
     transform: translateX(0);
   }
   

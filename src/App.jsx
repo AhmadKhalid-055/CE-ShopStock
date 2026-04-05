@@ -195,10 +195,10 @@ function App() {
              {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
        </div>
-       
-       <div className={`sidebar-overlay ${isSidebarOpen ? 'active' : ''}`} onClick={() => setIsSidebarOpen(false)}></div>
-
-      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
+       {isSidebarOpen && (
+         <div className="sidebar-overlay active" onClick={() => setIsSidebarOpen(false)}></div>
+       )}
+      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} isOpen={isSidebarOpen} />
       <main className="main-content">
         {renderContent()}
       </main>

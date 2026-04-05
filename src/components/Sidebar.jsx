@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import './Sidebar.css';
 
-const Sidebar = ({ activeTab, onTabChange }) => {
+const Sidebar = ({ activeTab, onTabChange, isOpen }) => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'inventory', label: 'Stock Manager', icon: Package },
@@ -20,7 +20,7 @@ const Sidebar = ({ activeTab, onTabChange }) => {
   ];
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? 'mobile-open' : ''}`}>
       <div className="sidebar-brand">
         <Store size={32} color="var(--primary)" />
         <h2>Choudhary <span>Electronics</span></h2>
