@@ -16,7 +16,7 @@ function App() {
   const [dbStatus, setDbStatus] = useState('Checking...');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-     return localStorage.getItem('ch_logged_in') !== 'false';
+     return localStorage.getItem('ch_logged_in') === 'true';
   });
 
   const [loginUsername, setLoginUsername] = useState('');
