@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Tag, Building2, PackageCheck, Eye, EyeOff } from 'lucide-react';
+import SearchableInput from './SearchableInput';
 import './MasterData.css';
 
 const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany, onAddModel }) => {
@@ -42,6 +43,7 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
       </header>
 
       <div className="setup-grid">
+        {/* CATEGORIES */}
         <section className="setup-card">
           <div className="card-header" style={{ justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -74,6 +76,7 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
           )}
         </section>
 
+        {/* COMPANIES / BRANDS */}
         <section className="setup-card">
           <div className="card-header" style={{ justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -89,16 +92,12 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
             </button>
           </div>
           <div className="setup-input-stack">
-            <input 
-              list="master-cats"
-              placeholder="Select or type Category"
+            <SearchableInput
+              options={categories}
               value={newCompany.category}
-              onChange={(e) => setNewCompany({...newCompany, category: e.target.value})}
-              className="searchable-dropdown"
+              onChange={(val) => setNewCompany({ ...newCompany, category: val })}
+              placeholder="Select or type Category"
             />
-            <datalist id="master-cats">
-              {categories.map((c, i) => <option key={i} value={c} />)}
-            </datalist>
             <div className="setup-input-group">
               <input 
                 type="text" 
@@ -122,6 +121,7 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
           )}
         </section>
 
+        {/* ITEM MODELS */}
         <section className="setup-card full-row">
           <div className="card-header" style={{ justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -137,30 +137,20 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
             </button>
           </div>
           <div className="setup-input-row">
-            <input 
-              list="master-model-cats"
-              placeholder="Category"
+            <SearchableInput
+              options={categories}
               value={newModel.category}
-              onChange={(e) => setNewModel({...newModel, category: e.target.value, company: ''})}
-              className="searchable-dropdown"
+              onChange={(val) => setNewModel({ ...newModel, category: val, company: '' })}
+              placeholder="Category"
             />
-            <datalist id="master-model-cats">
-              {categories.map((c, i) => <option key={i} value={c} />)}
-            </datalist>
-            
-            <input 
-              list="master-model-comps"
-              placeholder="Company"
+
+            <SearchableInput
+              options={companies.filter(c => c.category === newModel.category).map(c => c.name)}
               value={newModel.company}
+              onChange={(val) => setNewModel({ ...newModel, company: val })}
+              placeholder="Company"
               disabled={!newModel.category}
-              onChange={(e) => setNewModel({...newModel, company: e.target.value})}
-              className="searchable-dropdown"
             />
-            <datalist id="master-model-comps">
-              {companies
-                .filter(c => c.category === newModel.category)
-                .map((c, i) => <option key={i} value={c.name} />)}
-            </datalist>
 
             <input 
               type="text" 

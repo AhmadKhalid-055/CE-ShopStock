@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, Package, Plus, Trash2, X, Printer, FileText, Lock, Hash, StickyNote, Edit3, Save } from 'lucide-react';
 import ConfirmModal from './ConfirmModal';
+import SearchableInput from './SearchableInput';
 import './SalesPortal.css';
 
 const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, persistentSettings, onUpdateSettings }) => {
@@ -193,29 +194,23 @@ const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, p
                   {newSale.items.map((item, idx) => (
                     <div key={idx} className="item-row fade-in">
                       <div className="form-group flex-2">
-                        <input 
-                          list={`products-list-${idx}`}
+                        <SearchableInput
+                          options={products.filter(p => p.stock > 0 || editingSale).map(p => `${p.model} (${p.company})`)}
                           value={item._productSearch !== undefined ? item._productSearch : (item.productId ? (products.find(p=>p.id===item.productId) ? `${products.find(p=>p.id===item.productId).model} (${products.find(p=>p.id===item.productId).company})` : '') : '')}
-                          disabled={editingSale} 
+                          disabled={editingSale}
                           placeholder="Type to search item..."
-                          onChange={e => {
-                            const val = e.target.value;
-                            updateItem(idx, '_productSearch', val);
+                          onChange={val => {
                             const matched = products.find(p => `${p.model} (${p.company})` === val);
-                            if (matched) {
-                               updateItem(idx, 'productId', matched.id);
-                            } else {
-                               updateItem(idx, 'productId', '');
-                               updateItem(idx, 'salePrice', '');
-                            }
+                            const updatedItems = [...newSale.items];
+                            updatedItems[idx] = {
+                              ...updatedItems[idx],
+                              _productSearch: val,
+                              productId: matched ? matched.id : '',
+                              salePrice: matched ? matched.sale_price : ''
+                            };
+                            setNewSale({ ...newSale, items: updatedItems });
                           }}
-                          className="searchable-dropdown"
                         />
-                        <datalist id={`products-list-${idx}`}>
-                          {products.map(p => (
-                            <option key={p.id} value={`${p.model} (${p.company})`} disabled={p.stock <= 0 && !editingSale} />
-                          ))}
-                        </datalist>
                       </div>
                       <div className="form-group" style={{flex: '0 0 70px'}}>
                         <input type="number" placeholder="Qty" min="1" value={item.quantity} onChange={e => updateItem(idx, 'quantity', e.target.value)} />

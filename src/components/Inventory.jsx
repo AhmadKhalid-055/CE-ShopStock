@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Plus, MoreVertical, Filter, Download, X, Edit, Trash2 } from 'lucide-react';
 import ConfirmModal from './ConfirmModal';
+import SearchableInput from './SearchableInput';
 import './Inventory.css';
 
 const Inventory = ({ products, categories, companies, models, onAddProduct, onDeleteProduct, onUpdateProduct }) => {
@@ -86,50 +87,34 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
             <div className="form-grid">
               <div className="form-group">
                 <label>Category</label>
-                <input 
-                  list="inv-categories"
-                  placeholder="Select or type Category"
+                <SearchableInput
+                  options={categories}
                   value={newProduct.category}
-                  onChange={(e) => setNewProduct({...newProduct, category: e.target.value, company: '', model: ''})}
-                  className="searchable-dropdown"
+                  onChange={(val) => setNewProduct({...newProduct, category: val, company: '', model: ''})}
+                  placeholder="Select or type Category"
                 />
-                <datalist id="inv-categories">
-                  {categories.map((c, i) => <option key={i} value={c} />)}
-                </datalist>
               </div>
 
               <div className="form-group">
                 <label>Company / Brand</label>
-                <input 
-                  list="inv-companies"
-                  placeholder="Select or type Company"
+                <SearchableInput
+                  options={companies.filter(c => c.category === newProduct.category).map(c => c.name)}
                   value={newProduct.company}
                   disabled={!newProduct.category}
-                  onChange={(e) => setNewProduct({...newProduct, company: e.target.value, model: ''})}
-                  className="searchable-dropdown"
+                  onChange={(val) => setNewProduct({...newProduct, company: val, model: ''})}
+                  placeholder="Select or type Company"
                 />
-                <datalist id="inv-companies">
-                  {companies
-                    .filter(c => c.category === newProduct.category)
-                    .map((c, i) => <option key={i} value={c.name} />)}
-                </datalist>
               </div>
 
               <div className="form-group">
                 <label>Model</label>
-                <input 
-                  list="inv-models"
-                  placeholder="Select or type Model"
+                <SearchableInput
+                  options={models.filter(m => m.company === newProduct.company && m.category === newProduct.category).map(m => m.name)}
                   value={newProduct.model}
                   disabled={!newProduct.company}
-                  onChange={(e) => setNewProduct({...newProduct, model: e.target.value})}
-                  className="searchable-dropdown"
+                  onChange={(val) => setNewProduct({...newProduct, model: val})}
+                  placeholder="Select or type Model"
                 />
-                <datalist id="inv-models">
-                  {models
-                    .filter(m => m.company === newProduct.company && m.category === newProduct.category)
-                    .map((m, i) => <option key={i} value={m.name} />)}
-                </datalist>
               </div>
 
               <div className="form-group">
