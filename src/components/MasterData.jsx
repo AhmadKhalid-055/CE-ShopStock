@@ -89,13 +89,16 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
             </button>
           </div>
           <div className="setup-input-stack">
-            <select 
+            <input 
+              list="master-cats"
+              placeholder="Select or type Category"
               value={newCompany.category}
               onChange={(e) => setNewCompany({...newCompany, category: e.target.value})}
-            >
-              <option value="">Select Category</option>
-              {categories.map((c, i) => <option key={i} value={c}>{c}</option>)}
-            </select>
+              className="searchable-dropdown"
+            />
+            <datalist id="master-cats">
+              {categories.map((c, i) => <option key={i} value={c} />)}
+            </datalist>
             <div className="setup-input-group">
               <input 
                 type="text" 
@@ -134,24 +137,30 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
             </button>
           </div>
           <div className="setup-input-row">
-            <select 
+            <input 
+              list="master-model-cats"
+              placeholder="Category"
               value={newModel.category}
               onChange={(e) => setNewModel({...newModel, category: e.target.value, company: ''})}
-            >
-              <option value="">Category</option>
-              {categories.map((c, i) => <option key={i} value={c}>{c}</option>)}
-            </select>
+              className="searchable-dropdown"
+            />
+            <datalist id="master-model-cats">
+              {categories.map((c, i) => <option key={i} value={c} />)}
+            </datalist>
             
-            <select 
+            <input 
+              list="master-model-comps"
+              placeholder="Company"
               value={newModel.company}
               disabled={!newModel.category}
               onChange={(e) => setNewModel({...newModel, company: e.target.value})}
-            >
-              <option value="">Company</option>
+              className="searchable-dropdown"
+            />
+            <datalist id="master-model-comps">
               {companies
                 .filter(c => c.category === newModel.category)
-                .map((c, i) => <option key={i} value={c.name}>{c.name}</option>)}
-            </select>
+                .map((c, i) => <option key={i} value={c.name} />)}
+            </datalist>
 
             <input 
               type="text" 

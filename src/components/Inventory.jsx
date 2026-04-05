@@ -86,41 +86,50 @@ const Inventory = ({ products, categories, companies, models, onAddProduct, onDe
             <div className="form-grid">
               <div className="form-group">
                 <label>Category</label>
-                <select 
+                <input 
+                  list="inv-categories"
+                  placeholder="Select or type Category"
                   value={newProduct.category}
                   onChange={(e) => setNewProduct({...newProduct, category: e.target.value, company: '', model: ''})}
-                >
-                  <option value="">Select Category</option>
-                  {categories.map((c, i) => <option key={i} value={c}>{c}</option>)}
-                </select>
+                  className="searchable-dropdown"
+                />
+                <datalist id="inv-categories">
+                  {categories.map((c, i) => <option key={i} value={c} />)}
+                </datalist>
               </div>
 
               <div className="form-group">
                 <label>Company / Brand</label>
-                <select 
+                <input 
+                  list="inv-companies"
+                  placeholder="Select or type Company"
                   value={newProduct.company}
                   disabled={!newProduct.category}
                   onChange={(e) => setNewProduct({...newProduct, company: e.target.value, model: ''})}
-                >
-                  <option value="">Select Company</option>
+                  className="searchable-dropdown"
+                />
+                <datalist id="inv-companies">
                   {companies
                     .filter(c => c.category === newProduct.category)
-                    .map((c, i) => <option key={i} value={c.name}>{c.name}</option>)}
-                </select>
+                    .map((c, i) => <option key={i} value={c.name} />)}
+                </datalist>
               </div>
 
               <div className="form-group">
                 <label>Model</label>
-                <select 
+                <input 
+                  list="inv-models"
+                  placeholder="Select or type Model"
                   value={newProduct.model}
                   disabled={!newProduct.company}
                   onChange={(e) => setNewProduct({...newProduct, model: e.target.value})}
-                >
-                  <option value="">Select Model</option>
+                  className="searchable-dropdown"
+                />
+                <datalist id="inv-models">
                   {models
                     .filter(m => m.company === newProduct.company && m.category === newProduct.category)
-                    .map((m, i) => <option key={i} value={m.name}>{m.name}</option>)}
-                </select>
+                    .map((m, i) => <option key={i} value={m.name} />)}
+                </datalist>
               </div>
 
               <div className="form-group">

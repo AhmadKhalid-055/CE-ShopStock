@@ -193,14 +193,29 @@ const SalesPortal = ({ products, sales, onAddSale, onDeleteSale, onUpdateSale, p
                   {newSale.items.map((item, idx) => (
                     <div key={idx} className="item-row fade-in">
                       <div className="form-group flex-2">
-                        <select value={item.productId} disabled={editingSale} onChange={e => updateItem(idx, 'productId', e.target.value)}>
-                          <option value="">Choose item...</option>
+                        <input 
+                          list={`products-list-${idx}`}
+                          value={item._productSearch !== undefined ? item._productSearch : (item.productId ? (products.find(p=>p.id===item.productId) ? `${products.find(p=>p.id===item.productId).model} (${products.find(p=>p.id===item.productId).company})` : '') : '')}
+                          disabled={editingSale} 
+                          placeholder="Type to search item..."
+                          onChange={e => {
+                            const val = e.target.value;
+                            updateItem(idx, '_productSearch', val);
+                            const matched = products.find(p => `${p.model} (${p.company})` === val);
+                            if (matched) {
+                               updateItem(idx, 'productId', matched.id);
+                            } else {
+                               updateItem(idx, 'productId', '');
+                               updateItem(idx, 'salePrice', '');
+                            }
+                          }}
+                          className="searchable-dropdown"
+                        />
+                        <datalist id={`products-list-${idx}`}>
                           {products.map(p => (
-                            <option key={p.id} value={p.id} disabled={p.stock <= 0 && !editingSale}>
-                               {p.model} ({p.company})
-                            </option>
+                            <option key={p.id} value={`${p.model} (${p.company})`} disabled={p.stock <= 0 && !editingSale} />
                           ))}
-                        </select>
+                        </datalist>
                       </div>
                       <div className="form-group" style={{flex: '0 0 70px'}}>
                         <input type="number" placeholder="Qty" min="1" value={item.quantity} onChange={e => updateItem(idx, 'quantity', e.target.value)} />
