@@ -112,7 +112,7 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
             <div className="item-list scrollable" style={{ padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '8px', background: '#f8fafc' }}>
               {companies.map((c, i) => (
                 <span key={i} className="chip">
-                  {c.name} <small>({c.category})</small>
+                  {c.name || c} {c.category && <small>({c.category})</small>}
                 </span>
               ))}
             </div>
@@ -169,7 +169,7 @@ const MasterData = ({ categories, companies, models, onAddCategory, onAddCompany
             <div className="item-list scrollable" style={{ padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '8px', background: '#f8fafc' }}>
                {models.map((m, i) => (
                 <span key={i} className="chip">
-                  {m.name} <small>({m.company} - {m.category})</small>
+                  {m.name || m} {m.company && <small>({m.company} - {m.category})</small>}
                 </span>
               ))}
             </div>

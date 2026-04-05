@@ -68,8 +68,16 @@ function App() {
         const { data: p } = await supabase.from('products').select('*');
         const { data: s } = await supabase.from('sales').select('*');
         const { data: c } = await supabase.from('categories').select('*');
+        const { data: comp } = await supabase.from('companies').select('*');
+        const { data: mod } = await supabase.from('models').select('*');
 
         if (c && c.length > 0) setCategories(prev => [...new Set([...prev, ...c.map(t => t.name)])]);
+        if (comp && comp.length > 0) {
+           setCompanies(prev => comp.length >= prev.length ? comp : prev);
+        }
+        if (mod && mod.length > 0) {
+           setModels(prev => mod.length >= prev.length ? mod : prev);
+        }
         if (p && p.length > products.length) setProducts(p);
         if (s && s.length > sales.length) setSales(s);
 
