@@ -6,7 +6,8 @@ import {
   BarChart3, 
   Settings, 
   LogOut,
-  Store
+  Store,
+  Sliders
 } from 'lucide-react';
 import './Sidebar.css';
 
@@ -43,6 +44,13 @@ const Sidebar = ({ activeTab, onTabChange, isOpen }) => {
       </nav>
       
       <div className="sidebar-footer">
+        <button
+          className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
+          onClick={() => onTabChange('settings')}
+        >
+          <Sliders size={20} />
+          <span>Settings</span>
+        </button>
         <button className="nav-item logout">
           <LogOut size={20} />
           <span>Log Out</span>

@@ -7,6 +7,7 @@ import SalesPortal from './components/SalesPortal';
 import MasterData from './components/MasterData';
 import Analytics from './components/Analytics';
 import Sidebar from './components/Sidebar';
+import SettingsPage from './components/Settings';
 import './index.css';
 
 function App() {
@@ -160,6 +161,37 @@ function App() {
     await sb.from('sales').delete().eq('id', id);
   };
 
+  const deleteCategory = async (name) => {
+    setCategories(prev => prev.filter(c => c !== name));
+    try { const sb = getClient(); await sb.from('categories').delete().eq('name', name); } catch(e) {}
+  };
+
+  const deleteCompany = async (id) => {
+    setCompanies(prev => prev.filter(c => (c.id || c) !== id));
+    try { const sb = getClient(); await sb.from('companies').delete().eq('id', id); } catch(e) {}
+  };
+
+  const deleteModel = async (id) => {
+    setModels(prev => prev.filter(m => (m.id || m) !== id));
+    try { const sb = getClient(); await sb.from('models').delete().eq('id', id); } catch(e) {}
+  };
+
+  const deleteAll = async () => {
+    setCategories([]);
+    setCompanies([]);
+    setModels([]);
+    setSales([]);
+    setProducts([]);
+    try {
+      const sb = getClient();
+      await sb.from('categories').delete().neq('name', '__none__');
+      await sb.from('companies').delete().neq('id', '__none__');
+      await sb.from('models').delete().neq('id', '__none__');
+      await sb.from('sales').delete().neq('id', '__none__');
+      await sb.from('products').delete().neq('id', '__none__');
+    } catch(e) {}
+  };
+
   if (loading && products.length === 0) {
     return (
       <div className="loading-screen-premium">
@@ -183,6 +215,7 @@ function App() {
       case 'categories': return <MasterData categories={categories} companies={companies} models={models} onAddCategory={addCategory} onAddCompany={addCompany} onAddModel={addModel} />;
       case 'sales': return <SalesPortal products={products} sales={sales} onAddSale={(sale) => { addSale(sale); const curr = parseInt(settings.invoiceNo); if (!isNaN(curr)) setSettings(prev => ({...prev, invoiceNo: (curr + 1).toString()})); }} onDeleteSale={deleteSale} onUpdateSale={()=>{}} persistentSettings={{invoiceNo: settings.invoiceNo || '1001', cashMemo: settings.cashMemo}} onUpdateSettings={(newSet) => setSettings(prev => ({...prev, ...newSet}))} />;
       case 'analytics': return <Analytics sales={sales} products={products} />;
+      case 'settings': return <SettingsPage categories={categories} companies={companies} models={models} sales={sales} onDeleteCategory={deleteCategory} onDeleteCompany={deleteCompany} onDeleteModel={deleteModel} onDeleteSale={deleteSale} onDeleteAll={deleteAll} />;
       default: return <Dashboard products={products} sales={sales} />;
     }
   };
